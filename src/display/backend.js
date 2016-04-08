@@ -1,22 +1,32 @@
+'use strict';
+
 /**
  * @class Abstract display backend module
  * @private
  */
-ROT.Display.Backend = function(context) {
-	this._context = context;
-}
+export class Backend {
+  constructor(context)
+  {
+    this._context = context;
+  }
 
-ROT.Display.Backend.prototype.compute = function(options) {
-}
+  compute(options)
+  {
+  }
 
-ROT.Display.Backend.prototype.draw = function(data, clearBefore) {
-}
+  draw(data, clearBefore:boolean)
+  {
+  }
 
-ROT.Display.Backend.prototype.computeSize = function(availWidth, availHeight) {
-}
+  computeSize(availWidth:number, availHeight:number):number[]
+  {
+  }
 
-ROT.Display.Backend.prototype.computeFontSize = function(availWidth, availHeight) {
-}
+  computeFontSize(availWidth:number, availHeight:number):number
+  {
+  }
 
-ROT.Display.Backend.prototype.eventToPosition = function(x, y) {
+  eventToPosition(x:number, y:number):number[]
+  {
+  }
 }

@@ -1,7 +1,10 @@
+'use strict';
+
 /**
  * @class Base noise generator
  */
-ROT.Noise = function() {
-};
-
-ROT.Noise.prototype.get = function(x, y) {}
+export class Noise {
+  get(x:number, y:number)
+  {
+  }
+}
