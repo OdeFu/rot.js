@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 import { ROT } from '../rot';

@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 import { RNG } from './rng';

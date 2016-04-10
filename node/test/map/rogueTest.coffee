@@ -28,7 +28,7 @@ describe "rogue", ->
         dungeon = new ROT.Map.Rogue()
         dungeon.create (x, y, value) ->
           almostDone()
-        dungeon._options.should.have.properties [ "roomWidth", "roomHeight" ]
+        dungeon.options.should.have.properties [ "roomWidth", "roomHeight" ]
 
       it "should accept options", (done) ->
         { DEFAULT_WIDTH, DEFAULT_HEIGHT } = ROT
@@ -104,8 +104,8 @@ describe "rogue", ->
       it "should log if it can't connect a room", ->
         dungeon = new ROT.Map.Rogue()
         dungeon.connectedCells = []
-        dungeon._options.cellWidth = 1
-        dungeon._options.cellHeight = 1
+        dungeon.options.cellWidth = 1
+        dungeon.options.cellHeight = 1
         newRoom = ->
           return room =
             connections: []
@@ -123,10 +123,10 @@ describe "rogue", ->
         dungeon = new ROT.Map.Rogue 9, 9
         dungeon._width = w
         dungeon._height = h
-        dungeon._options.cellWidth = cw
-        dungeon._options.cellHeight = ch
-        dungeon._options.roomWidth = roomWidth
-        dungeon._options.roomHeight = roomHeight
+        dungeon.options.cellWidth = cw
+        dungeon.options.cellHeight = ch
+        dungeon.options.roomWidth = roomWidth
+        dungeon.options.roomHeight = roomHeight
         dungeon.rooms = []
         dungeon.map = dungeon._fillMap 0
         dungeon._initRooms()
@@ -142,10 +142,10 @@ describe "rogue", ->
         dungeon = new ROT.Map.Rogue 10, 10
         dungeon._width = w
         dungeon._height = h
-        dungeon._options.cellWidth = cw
-        dungeon._options.cellHeight = ch
-        dungeon._options.roomWidth = roomWidth
-        dungeon._options.roomHeight = roomHeight
+        dungeon.options.cellWidth = cw
+        dungeon.options.cellHeight = ch
+        dungeon.options.roomWidth = roomWidth
+        dungeon.options.roomHeight = roomHeight
         dungeon.rooms = []
         dungeon.map = dungeon._fillMap 0
         dungeon._initRooms()
@@ -166,8 +166,8 @@ describe "rogue", ->
           almostDone() if (room is undefined) and (dir is undefined)
         dungeon._drawCorridore = ->
           almostDone()
-        dungeon._options.cellWidth = 1
-        dungeon._options.cellHeight = 1
+        dungeon.options.cellWidth = 1
+        dungeon.options.cellHeight = 1
         room =
           connections: []
           cellx: 0

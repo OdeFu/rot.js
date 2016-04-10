@@ -1,3 +1,4 @@
+// @flow
 'use strict';
 
 /**
@@ -16,7 +17,7 @@ export const Text = {
   /**
    * Measure size of a resulting text block
    */
-  measure: function (str:string, maxWidth:number):{number, number}
+  measure: function (str:string, maxWidth:number):{width:number, height:number}
   {
     const result = { width: 0, height: 1 };
     const tokens = this.tokenize(str, maxWidth);
@@ -59,14 +60,14 @@ export const Text = {
       if (part.length)
       {
         result.push({
-          type: ROT.Text.TYPE_TEXT,
+          type: Text.TYPE_TEXT,
           value: part
         });
       }
 
       /* color command */
       result.push({
-        type: (type == "c" ? ROT.Text.TYPE_FG : ROT.Text.TYPE_BG),
+        type: (type == "c" ? Text.TYPE_FG : Text.TYPE_BG),
         value: name.trim()
       });
 
@@ -79,7 +80,7 @@ export const Text = {
     if (part.length)
     {
       result.push({
-        type: ROT.Text.TYPE_TEXT,
+        type: Text.TYPE_TEXT,
         value: part
       });
     }
@@ -88,7 +89,7 @@ export const Text = {
   },
 
   /* insert line breaks into first-pass tokenized data */
-  _breakLines: function (tokens, maxWidth)
+  _breakLines: function (tokens:Array<any>, maxWidth:number):Array<any>
   {
     if (!maxWidth)
     {
@@ -229,10 +230,10 @@ export const Text = {
    * @param {object[]} tokens
    * @param {int} tokenIndex Token being processed
    * @param {int} breakIndex Index within current token's value
-   * @param {bool} removeBreakChar Do we want to remove the breaking character?
+   * @param {boolean} removeBreakChar Do we want to remove the breaking character?
    * @returns {string} remaining unbroken token value
    */
-  _breakInsideToken: function (tokens, tokenIndex, breakIndex, removeBreakChar)
+  _breakInsideToken: function (tokens:Array<any>, tokenIndex:number, breakIndex:number, removeBreakChar:boolean):string
   {
     const newBreakToken = {
       type: Text.TYPE_NEWLINE

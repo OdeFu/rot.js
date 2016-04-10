@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 import { RNG } from '../rng';
@@ -56,8 +57,8 @@ export class Room extends Feature {
     let max = options.roomWidth[1];
     let width = RNG.getUniformInt(min, max);
 
-    let min = options.roomHeight[0];
-    let max = options.roomHeight[1];
+    min = options.roomHeight[0];
+    max = options.roomHeight[1];
     let height = RNG.getUniformInt(min, max);
 
     if (dx == 1)
@@ -96,8 +97,8 @@ export class Room extends Feature {
     let max = options.roomWidth[1];
     let width = RNG.getUniformInt(min, max);
 
-    let min = options.roomHeight[0];
-    let max = options.roomHeight[1];
+    min = options.roomHeight[0];
+    max = options.roomHeight[1];
     let height = RNG.getUniformInt(min, max);
 
     let x1 = cx - Math.floor(RNG.getUniform() * width);
@@ -117,8 +118,8 @@ export class Room extends Feature {
     let max = options.roomWidth[1];
     let width = RNG.getUniformInt(min, max);
 
-    let min = options.roomHeight[0];
-    let max = options.roomHeight[1];
+    min = options.roomHeight[0];
+    max = options.roomHeight[1];
     let height = RNG.getUniformInt(min, max);
 
     let left = availWidth - width - 1;

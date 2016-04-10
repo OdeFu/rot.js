@@ -1,3 +1,4 @@
+// @flow
 'use strict';
 
 /**
@@ -6,20 +7,22 @@
  * Alea is licensed according to the http://en.wikipedia.org/wiki/MIT_License.
  */
 export const RNG = {
+  seed:0,
+
   /**
    * @returns {number}
    */
   getSeed: function ():number {
-    return this._seed;
+    return this.seed;
   },
 
   /**
    * @param {number} seed Seed the number generator
    */
-  setSeed: function (seed:number) {
+  setSeed: function (seed:number):typeof RNG {
     seed = (seed < 1 ? 1 / seed : seed);
 
-    this._seed = seed;
+    this.seed = seed;
     this._s0 = (seed >>> 0) * this._frac;
 
     seed = (seed * 69069 + 1) >>> 0;
@@ -62,9 +65,9 @@ export const RNG = {
    */
   getNormal: function (mean:number, stddev:number):number {
     do {
-      let u = 2 * this.getUniform() - 1;
+      var u = 2 * this.getUniform() - 1;
       let v = 2 * this.getUniform() - 1;
-      let r = u * u + v * v;
+      var r = u * u + v * v;
     } while (r > 1 || r === 0);
 
     let gauss = u * Math.sqrt(-2 * Math.log(r) / r);
@@ -82,16 +85,18 @@ export const RNG = {
    * @param {object} data key=whatever, value=weight (relative probability)
    * @returns {string} whatever
    */
-  getWeightedValue: function (data):string {
+  getWeightedValue: function (data:{[key:string]: number}):string {
     let total = 0;
 
-    for (let id in data) {
+    for (var id in data) {
       total += data[id];
     }
     let random = this.getUniform() * total;
 
     let part = 0;
-    for (let id in data) {
+    let dummy:string = '';
+    for (var id:string in data) {
+      dummy = id;
       part += data[id];
       if (random < part) {
         return id;
@@ -100,14 +105,14 @@ export const RNG = {
 
     // If by some floating-point annoyance we have
     // random >= total, just return the last id.
-    return id;
+    return dummy;
   },
 
   /**
    * Get RNG state. Useful for storing the state and re-setting it via setState.
    * @returns {?} Internal state
    */
-  getState: function () {
+  getState: function ():number[] {
     return [this._s0, this._s1, this._s2, this._c];
   },
 
@@ -115,7 +120,7 @@ export const RNG = {
    * Set a previously retrieved state.
    * @param {?} state
    */
-  setState: function (state) {
+  setState: function (state:number[]):typeof RNG {
     this._s0 = state[0];
     this._s1 = state[1];
     this._s2 = state[2];
@@ -126,7 +131,7 @@ export const RNG = {
   /**
    * Returns a cloned RNG
    */
-  clone: function () {
+  clone: function ():typeof RNG {
     let clone = Object.create(this);
     clone.setState(this.getState());
     return clone;

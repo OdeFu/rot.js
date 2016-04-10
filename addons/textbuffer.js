@@ -1,5 +1,5 @@
 var TextBuffer = function() {
-	this._data = [];
+	this.data = [];
 	this._options = {
 		display: null,
 		position: new XY(),
@@ -12,11 +12,11 @@ TextBuffer.prototype.configure = function(options) {
 }
 
 TextBuffer.prototype.clear = function() {
-	this._data = [];
+	this.data = [];
 }
 
 TextBuffer.prototype.write = function(text) {
-	this._data.push(text);
+	this.data.push(text);
 }
 
 TextBuffer.prototype.flush = function() {
@@ -32,6 +32,6 @@ TextBuffer.prototype.flush = function() {
 		}
 	}
 
-	var text = this._data.join(" ");
+	var text = this.data.join(" ");
 	d.drawText(pos.x, pos.y, text, size.x);
 }

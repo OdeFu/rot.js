@@ -28,7 +28,7 @@ describe 'tile', ->
           tileHeight: 16
           width: 20
           height: 12
-        tile._options.should.equal MOCK_options
+        tile.options.should.equal MOCK_options
         tile._context.canvas.width.should.equal 320
         tile._context.canvas.height.should.equal 192
         tile._colorCanvas.width.should.equal 16

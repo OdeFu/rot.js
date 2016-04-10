@@ -42,7 +42,7 @@ describe "term", ->
           termColor: "xterm"
         term = new ROT.Display.Term context
         term.compute options
-        term._options.should.equal options
+        term.options.should.equal options
 
     describe "draw", ->
       it "should draw at the appropriate location", ->

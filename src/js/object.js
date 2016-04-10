@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 if (!Object.create) {

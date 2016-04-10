@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 import { ROT } from '../rot';
@@ -28,7 +29,7 @@ export class Display {
   {
     let canvas = document.createElement("canvas");
     this._context = canvas.getContext("2d");
-    this._data = {};
+    this.data = {};
     this._dirty = false;
     /* false = nothing, true = all, object = dirty cells */
     this._options = {};
@@ -82,7 +83,7 @@ export class Display {
    */
   clear():void
   {
-    this._data = {};
+    this.data = {};
     this._dirty = true;
   }
 
@@ -204,7 +205,7 @@ export class Display {
     {
       bg = this._options.bg;
     }
-    this._data[x + "," + y] = [x, y, ch, fg, bg];
+    this.data[x + "," + y] = [x, y, ch, fg, bg];
 
     if (this._dirty === true)
     {
@@ -310,7 +311,7 @@ export class Display {
       this._context.fillStyle = this._options.bg;
       this._context.fillRect(0, 0, this._context.canvas.width, this._context.canvas.height);
 
-      for (let id in this._data)
+      for (let id in this.data)
       { /* redraw cached data */
         this._draw(id, false);
       }
@@ -333,7 +334,7 @@ export class Display {
    */
   _draw(key, clearBefore)
   {
-    let data = this._data[key];
+    let data = this.data[key];
     if (data[4] != this._options.bg)
     {
       clearBefore = true;

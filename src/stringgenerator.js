@@ -1,3 +1,4 @@
+// @flow
 'use strict';
 
 import { RNG } from './rng';
@@ -8,50 +9,57 @@ import { RNG } from './rng';
  *   href="http://www.roguebasin.roguelikedevelopment.org/index.php?title=Names_from_a_high_order_Markov_Process_and_a_simplified_Katz_back-off_scheme">RogueBasin
  *   article</a>. Offers configurable order and prior.
  * @param {object} [options]
- * @param {bool} [options.words=false] Use word mode?
+ * @param {boolean} [options.words=false] Use word mode?
  * @param {int} [options.order=3]
  * @param {float} [options.prior=0.001]
  */
 export class StringGenerator {
-  constructor(options) {
+  options:{ words:boolean, order:number, prior: number };
+  boundary: string;
+  suffix: string;
+  prefix: string[];
+  priorValues:any;
+  data:any;
 
-    this._options = {
+  constructor(options: { words:boolean, order:number, prior: number }) {
+
+    this.options = {
       words: false,
       order: 3,
       prior: 0.001
     };
 
     for (let p in options) {
-      this._options[p] = options[p];
+      this.options[p] = options[p];
     }
 
-    this._boundary = String.fromCharCode(0);
-    this._suffix = this._boundary;
-    this._prefix = [];
-    for (let i = 0; i < this._options.order; i++) {
-      this._prefix.push(this._boundary);
+    this.boundary = String.fromCharCode(0);
+    this.suffix = this.boundary;
+    this.prefix = [];
+    for (let i = 0; i < this.options.order; i++) {
+      this.prefix.push(this.boundary);
     }
 
-    this._priorValues = {};
-    this._priorValues[this._boundary] = this._options.prior;
+    this.priorValues = {};
+    this.priorValues[this.boundary] = this.options.prior;
 
-    this._data = {};
+    this.data = {};
   }
 
   /**
    * Remove all learning data
    */
   clear() {
-    this._data = {};
-    this._priorValues = {};
+    this.data = {};
+    this.priorValues = {};
   }
 
   /**
    * @returns {string} Generated string
    */
   generate():string {
-    const result = [this._sample(this._prefix)];
-    while (result[result.length - 1] != this._boundary) {
+    const result = [this._sample(this.prefix)];
+    while (result[result.length - 1] != this.boundary) {
       result.push(this._sample(result));
     }
     return this._join(result.slice(0, -1));
@@ -64,14 +72,14 @@ export class StringGenerator {
     let tokens = this._split(string);
 
     for (let i = 0; i < tokens.length; i++) {
-      this._priorValues[tokens[i]] = this._options.prior;
+      this.priorValues[tokens[i]] = this.options.prior;
     }
 
-    tokens = this._prefix.concat(tokens).concat(this._suffix);
+    tokens = this.prefix.concat(tokens).concat(this.suffix);
     /* add boundary symbols */
 
-    for (let i = this._options.order; i < tokens.length; i++) {
-      const context = tokens.slice(i - this._options.order, i);
+    for (let i = this.options.order; i < tokens.length; i++) {
+      const context = tokens.slice(i - this.options.order, i);
       const event = tokens[i];
       for (let j = 0; j < context.length; j++) {
         const subcontext = context.slice(j);
@@ -84,7 +92,7 @@ export class StringGenerator {
     const parts = [];
 
     let priorCount = 0;
-    for (let p in this._priorValues) {
+    for (let p in this.priorValues) {
       priorCount++;
     }
     priorCount--;
@@ -93,9 +101,9 @@ export class StringGenerator {
 
     let dataCount = 0;
     let eventCount = 0;
-    for (let p in this._data) {
+    for (let p in this.data) {
       dataCount++;
-      for (let key in this._data[p]) {
+      for (let key in this.data[p]) {
         eventCount++;
       }
     }
@@ -110,7 +118,7 @@ export class StringGenerator {
    * @returns {string[]}
    */
   _split(str:string):string[] {
-    return str.split(this._options.words ? /\s+/ : "");
+    return str.split(this.options.words ? /\s+/ : "");
   }
 
   /**
@@ -118,7 +126,7 @@ export class StringGenerator {
    * @returns {string}
    */
   _join(arr:string[]):string {
-    return arr.join(this._options.words ? " " : "");
+    return arr.join(this.options.words ? " " : "");
   }
 
   /**
@@ -127,10 +135,10 @@ export class StringGenerator {
    */
   _observeEvent(context:string[], event:string) {
     const key = this._join(context);
-    if (!(key in this._data)) {
-      this._data[key] = {};
+    if (!(key in this.data)) {
+      this.data[key] = {};
     }
-    const data = this._data[key];
+    const data = this.data[key];
 
     if (!(event in data)) {
       data[event] = 0;
@@ -145,13 +153,13 @@ export class StringGenerator {
   _sample(context:string[]):string {
     context = this._backoff(context);
     const key = this._join(context);
-    const data = this._data[key];
+    const data = this.data[key];
 
     let available = {};
 
-    if (this._options.prior) {
-      for (const event in this._priorValues) {
-        available[event] = this._priorValues[event];
+    if (this.options.prior) {
+      for (const event in this.priorValues) {
+        available[event] = this.priorValues[event];
       }
       for (const event in data) {
         available[event] += data[event];
@@ -169,14 +177,14 @@ export class StringGenerator {
    * @returns {string[]}
    */
   _backoff(context:string[]):string[] {
-    if (context.length > this._options.order) {
-      context = context.slice(-this._options.order);
+    if (context.length > this.options.order) {
+      context = context.slice(-this.options.order);
     }
-    else if (context.length < this._options.order) {
-      context = this._prefix.slice(0, this._options.order - context.length).concat(context);
+    else if (context.length < this.options.order) {
+      context = this.prefix.slice(0, this.options.order - context.length).concat(context);
     }
 
-    while (!(this._join(context) in this._data) && context.length > 0) {
+    while (!(this._join(context) in this.data) && context.length > 0) {
       context = context.slice(1);
     }
 

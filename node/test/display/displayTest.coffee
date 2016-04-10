@@ -48,9 +48,9 @@ describe 'display', ->
       it 'should clear the display', ->
         display = new ROT.Display()
         display.draw 5,  4, "@"
-        display._data.should.not.eql {}
+        display.data.should.not.eql {}
         display.clear()
-        display._data.should.eql {}
+        display.data.should.eql {}
         display._dirty.should.equal true
 
     describe 'setOptions', ->
@@ -156,19 +156,19 @@ describe 'display', ->
       it 'should use the default fg if a fg is not provided', ->
         display = new ROT.Display({width:40, height:12, fg:'#abc', bg:'#cba'})
         display.draw 3, 5, '@', null, '#000'
-        display._data["3,5"].should.eql [ 3, 5, '@', '#abc', '#000' ]
+        display.data["3,5"].should.eql [ 3, 5, '@', '#abc', '#000' ]
 
       it 'should use the default bg if a bg is not provided', ->
         display = new ROT.Display({width:40, height:12, fg:'#abc', bg:'#cba'})
         display.draw 3, 5, '@', '#000', null
-        display._data["3,5"].should.eql [ 3, 5, '@', '#000', '#cba' ]
+        display.data["3,5"].should.eql [ 3, 5, '@', '#000', '#cba' ]
 
       it 'should create a dirty map if it does not have one', ->
         display = new ROT.Display({width:40, height:12, fg:'#abc', bg:'#cba'})
         delete display._dirty
         should(display._dirty).not.be.ok
         display.draw 5, 7, 'X', '#000', '#111'
-        display._data["5,7"].should.eql [ 5, 7, 'X', '#000', '#111' ]
+        display.data["5,7"].should.eql [ 5, 7, 'X', '#000', '#111' ]
         display._dirty.should.be.ok
         display._dirty["5,7"].should.equal true
 
@@ -176,7 +176,7 @@ describe 'display', ->
         display = new ROT.Display({width:40, height:12, fg:'#abc', bg:'#cba'})
         display._dirty = {}
         display.draw 5, 7, 'X', '#000', '#111'
-        display._data["5,7"].should.eql [ 5, 7, 'X', '#000', '#111' ]
+        display.data["5,7"].should.eql [ 5, 7, 'X', '#000', '#111' ]
         display._dirty["5,7"].should.equal true
 
     describe 'drawText', ->
@@ -194,25 +194,25 @@ describe 'display', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "%c{#00f}Hello"
         result.should.equal 1
-        display._data["3,5"].should.eql [ 3, 5, 'H', '#00f', '#000' ]
+        display.data["3,5"].should.eql [ 3, 5, 'H', '#00f', '#000' ]
 
       it 'should change the background color with %b{name}', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "%b{#00f}Hello"
         result.should.equal 1
-        display._data["3,5"].should.eql [ 3, 5, 'H', '#ccc', '#00f' ]
+        display.data["3,5"].should.eql [ 3, 5, 'H', '#ccc', '#00f' ]
 
       it 'should reset the foreground color with %c{}', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "%c{#00f}He%c{}llo"
         result.should.equal 1
-        display._data["5,5"].should.eql [ 5, 5, 'l', '#ccc', '#000' ]
+        display.data["5,5"].should.eql [ 5, 5, 'l', '#ccc', '#000' ]
 
       it 'should reset the background color with %b{}', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "%b{#00f}He%b{}llo"
         result.should.equal 1
-        display._data["5,5"].should.eql [ 5, 5, 'l', '#ccc', '#000' ]
+        display.data["5,5"].should.eql [ 5, 5, 'l', '#ccc', '#000' ]
 
       it 'should break lines at a specified maximum width', ->
         OUTPUT = 'This is the longest sentence in the English language.'
@@ -232,33 +232,33 @@ describe 'display', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "ⅧⅧⅧ"
         result.should.equal 1
-        display._data["4,5"].should.eql [ 4, 5, 'Ⅷ', '#ccc', '#000' ]
-        display._data["6,5"].should.eql [ 6, 5, 'Ⅷ', '#ccc', '#000' ]
-        display._data["8,5"].should.eql [ 8, 5, 'Ⅷ', '#ccc', '#000' ]
+        display.data["4,5"].should.eql [ 4, 5, 'Ⅷ', '#ccc', '#000' ]
+        display.data["6,5"].should.eql [ 6, 5, 'Ⅷ', '#ccc', '#000' ]
+        display.data["8,5"].should.eql [ 8, 5, 'Ⅷ', '#ccc', '#000' ]
 
       it 'should not add extra spaces if the previous character was a space', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "Ⅷ Ⅷ"
         result.should.equal 1
-        display._data["4,5"].should.eql [ 4, 5, 'Ⅷ', '#ccc', '#000' ]
-        display._data["5,5"].should.eql [ 5, 5, ' ', '#ccc', '#000' ]
-        display._data["6,5"].should.eql [ 6, 5, 'Ⅷ', '#ccc', '#000' ]
+        display.data["4,5"].should.eql [ 4, 5, 'Ⅷ', '#ccc', '#000' ]
+        display.data["5,5"].should.eql [ 5, 5, ' ', '#ccc', '#000' ]
+        display.data["6,5"].should.eql [ 6, 5, 'Ⅷ', '#ccc', '#000' ]
 
       it 'should add extra spaces if the previous character was not a space', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "ⅧaⅧ"
         result.should.equal 1
-        display._data["4,5"].should.eql [ 4, 5, 'Ⅷ', '#ccc', '#000' ]
-        display._data["6,5"].should.eql [ 6, 5, 'a', '#ccc', '#000' ]
-        display._data["8,5"].should.eql [ 8, 5, 'Ⅷ', '#ccc', '#000' ]
+        display.data["4,5"].should.eql [ 4, 5, 'Ⅷ', '#ccc', '#000' ]
+        display.data["6,5"].should.eql [ 6, 5, 'a', '#ccc', '#000' ]
+        display.data["8,5"].should.eql [ 8, 5, 'Ⅷ', '#ccc', '#000' ]
 
       it 'a character between 0xffdc and 0xffe8 should not be considered full-width', ->
         display = new ROT.Display()
         result = display.drawText 3, 5, "\uffe0\uffe0\uffe0"
         result.should.equal 1
-        display._data["3,5"].should.eql [ 3, 5, '￠', '#ccc', '#000' ]
-        display._data["4,5"].should.eql [ 4, 5, '￠', '#ccc', '#000' ]
-        display._data["5,5"].should.eql [ 5, 5, '￠', '#ccc', '#000' ]
+        display.data["3,5"].should.eql [ 3, 5, '￠', '#ccc', '#000' ]
+        display.data["4,5"].should.eql [ 4, 5, '￠', '#ccc', '#000' ]
+        display.data["5,5"].should.eql [ 5, 5, '￠', '#ccc', '#000' ]
 
     describe "_tick", ->
       it 'should call RAF to reschedule itself', (done) ->
@@ -276,7 +276,7 @@ describe 'display', ->
 
       it 'should redraw everything if _dirty is true', (done) ->
         display = new ROT.Display()
-        display._data =
+        display.data =
           "1,1": [ 1, 1, '@', '#fff', '#000' ]
         display._dirty = true
         display._draw = -> done()
@@ -284,7 +284,7 @@ describe 'display', ->
 
       it 'should redraw only the _dirty stuff', (done) ->
         display = new ROT.Display()
-        display._data =
+        display.data =
           "1,1": [ 1, 1, '@', '#fff', '#000' ]
           "2,2": [ 2, 2, '@', '#fff', '#000' ]
           "3,3": [ 3, 3, '@', '#fff', '#000' ]
@@ -298,7 +298,7 @@ describe 'display', ->
         display = new ROT.Display()
         display._backend =
           draw: -> done()
-        display._data =
+        display.data =
           "1,1": [ 1, 1, '@', '#fff', '#000' ]
           "2,2": [ 2, 2, '@', '#fff', '#000' ]
           "3,3": [ 3, 3, '@', '#fff', '#000' ]
@@ -308,7 +308,7 @@ describe 'display', ->
         display = new ROT.Display()
         display._backend =
           draw: (data, clear) -> done() if clear
-        display._data =
+        display.data =
           "1,1": [ 1, 1, '@', '#fff', '#000' ]
           "2,2": [ 2, 2, '@', '#fff', '#888' ]
           "3,3": [ 3, 3, '@', '#fff', '#000' ]

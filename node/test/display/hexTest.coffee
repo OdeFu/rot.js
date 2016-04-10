@@ -30,7 +30,7 @@ describe 'hex', ->
           transpose: false
           width: 80
           height: 25
-        hex._options.should.equal options
+        hex.options.should.equal options
         xprop = hex._context.canvas.width
         yprop = hex._context.canvas.height
         # compute with transposition

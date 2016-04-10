@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 import { Map } from './map';
@@ -102,7 +103,7 @@ export class DividedMazeMap extends Map {
       w.push([i, y]);
     }
 
-    let w = [];
+    w = [];
     walls.push(w);
     /* right part */
     for (let i = x + 1; i <= room[2]; i++)
@@ -111,7 +112,7 @@ export class DividedMazeMap extends Map {
       w.push([i, y]);
     }
 
-    let w = [];
+    w = [];
     walls.push(w);
     /* top part */
     for (let j = room[1]; j < y; j++)
@@ -120,7 +121,7 @@ export class DividedMazeMap extends Map {
       w.push([x, j]);
     }
 
-    let w = [];
+    w = [];
     walls.push(w);
     /* bottom part */
     for (let j = y + 1; j <= room[3]; j++)

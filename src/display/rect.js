@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 import { Backend } from './backend';
@@ -7,7 +8,7 @@ import { Backend } from './backend';
  * @private
  */
 export class RectBackend extends Backend {
-  static cache:boolean = false;
+  static cache:boolean;
 
   constructor(context)
   {

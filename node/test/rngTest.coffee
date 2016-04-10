@@ -9,31 +9,31 @@ describe "rng", ->
     ROT.should.have.property "RNG"
     
   it "should automatically seed the RNG", ->
-    ROT.RNG._seed.should.be.ok
+    ROT.RNG.seed.should.be.ok
   
   describe "RNG", ->
     describe "getSeed", ->
       it "should return the seed", ->
         seed = ROT.RNG.getSeed()
-        seed.should.equal ROT.RNG._seed
+        seed.should.equal ROT.RNG.seed
 
     describe "setSeed", ->
       it "should be able to handle less than 1", ->
         ROT.RNG.setSeed 0.5
-        ROT.RNG._seed.should.be.a.Number
-        ROT.RNG._s0.should.be.a.Number
-        ROT.RNG._s1.should.be.a.Number
-        ROT.RNG._s2.should.be.a.Number
-        ROT.RNG._c.should.be.a.Number
+        ROT.RNG.seed.should.be.a.Number
+        ROT.RNG.s0.should.be.a.Number
+        ROT.RNG.s1.should.be.a.Number
+        ROT.RNG.s2.should.be.a.Number
+        ROT.RNG.c.should.be.a.Number
         ROT.RNG._frac.should.be.a.Number
         
       it "should be able to handle 0", ->
         ROT.RNG.setSeed 0
-        ROT.RNG._seed.should.be.a.Number
-        ROT.RNG._s0.should.be.a.Number
-        ROT.RNG._s1.should.be.a.Number
-        ROT.RNG._s2.should.be.a.Number
-        ROT.RNG._c.should.be.a.Number
+        ROT.RNG.seed.should.be.a.Number
+        ROT.RNG.s0.should.be.a.Number
+        ROT.RNG.s1.should.be.a.Number
+        ROT.RNG.s2.should.be.a.Number
+        ROT.RNG.c.should.be.a.Number
         ROT.RNG._frac.should.be.a.Number
 
     describe "getUniform", ->
@@ -41,12 +41,12 @@ describe "rng", ->
         ROT.RNG.setSeed Date.now()
         {_seed, _s0, _s1, _s2, _c, _frac} = ROT.RNG
         uniform = ROT.RNG.getUniform()
-        ROT.RNG._seed.should.equal _seed
+        ROT.RNG.seed.should.equal _seed
         ROT.RNG._frac.should.equal _frac
-        ROT.RNG._s0.should.not.equal _s0
-        ROT.RNG._s1.should.not.equal _s1
-        ROT.RNG._s2.should.not.equal _s2
-        ROT.RNG._c.should.not.equal _c
+        ROT.RNG.s0.should.not.equal _s0
+        ROT.RNG.s1.should.not.equal _s1
+        ROT.RNG.s2.should.not.equal _s2
+        ROT.RNG.c.should.not.equal _c
         
       it "should return a value between [0,1)", ->
         ROT.RNG.setSeed Date.now()
@@ -59,12 +59,12 @@ describe "rng", ->
         ROT.RNG.setSeed Date.now()
         {_seed, _s0, _s1, _s2, _c, _frac} = ROT.RNG
         uniformInt = ROT.RNG.getUniformInt 1, 6
-        ROT.RNG._seed.should.equal _seed
+        ROT.RNG.seed.should.equal _seed
         ROT.RNG._frac.should.equal _frac
-        ROT.RNG._s0.should.not.equal _s0
-        ROT.RNG._s1.should.not.equal _s1
-        ROT.RNG._s2.should.not.equal _s2
-        ROT.RNG._c.should.not.equal _c
+        ROT.RNG.s0.should.not.equal _s0
+        ROT.RNG.s1.should.not.equal _s1
+        ROT.RNG.s2.should.not.equal _s2
+        ROT.RNG.c.should.not.equal _c
         
       it "should return a value between [1,6]", ->
         ROT.RNG.setSeed Date.now()
@@ -76,12 +76,12 @@ describe "rng", ->
         ROT.RNG.setSeed Date.now()
         {_seed, _s0, _s1, _s2, _c, _frac} = ROT.RNG
         normal = ROT.RNG.getNormal 250, 100
-        ROT.RNG._seed.should.equal _seed
+        ROT.RNG.seed.should.equal _seed
         ROT.RNG._frac.should.equal _frac
-        ROT.RNG._s0.should.not.equal _s0
-        ROT.RNG._s1.should.not.equal _s1
-        ROT.RNG._s2.should.not.equal _s2
-        ROT.RNG._c.should.not.equal _c
+        ROT.RNG.s0.should.not.equal _s0
+        ROT.RNG.s1.should.not.equal _s1
+        ROT.RNG.s2.should.not.equal _s2
+        ROT.RNG.c.should.not.equal _c
 
       it "should work without parameters", ->
         ROT.RNG.setSeed Date.now()
@@ -93,12 +93,12 @@ describe "rng", ->
         ROT.RNG.setSeed Date.now()
         {_seed, _s0, _s1, _s2, _c, _frac} = ROT.RNG
         percentage = ROT.RNG.getPercentage()
-        ROT.RNG._seed.should.equal _seed
+        ROT.RNG.seed.should.equal _seed
         ROT.RNG._frac.should.equal _frac
-        ROT.RNG._s0.should.not.equal _s0
-        ROT.RNG._s1.should.not.equal _s1
-        ROT.RNG._s2.should.not.equal _s2
-        ROT.RNG._c.should.not.equal _c
+        ROT.RNG.s0.should.not.equal _s0
+        ROT.RNG.s1.should.not.equal _s1
+        ROT.RNG.s2.should.not.equal _s2
+        ROT.RNG.c.should.not.equal _c
         
       it "should return a value between [1,100]", ->
         ROT.RNG.setSeed Date.now()
@@ -112,12 +112,12 @@ describe "rng", ->
         value = ROT.RNG.getWeightedValue MOCK_data =
           red: 9
           green: 1
-        ROT.RNG._seed.should.equal _seed
+        ROT.RNG.seed.should.equal _seed
         ROT.RNG._frac.should.equal _frac
-        ROT.RNG._s0.should.not.equal _s0
-        ROT.RNG._s1.should.not.equal _s1
-        ROT.RNG._s2.should.not.equal _s2
-        ROT.RNG._c.should.not.equal _c
+        ROT.RNG.s0.should.not.equal _s0
+        ROT.RNG.s1.should.not.equal _s1
+        ROT.RNG.s2.should.not.equal _s2
+        ROT.RNG.c.should.not.equal _c
         
       it "should return one of the values provided", ->
         ROT.RNG.setSeed Date.now()

@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 if (!String.prototype.capitalize)
@@ -77,7 +78,6 @@ if (!String.format)
       {
         return match;
       }
-      let obj = args[0];
 
       let group = group1 || group2;
       let parts = group.split(",");

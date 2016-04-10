@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 if (!Number.prototype.mod)

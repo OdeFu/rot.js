@@ -1,3 +1,4 @@
+// @flwo
 'use strict';
 
 import { Dungeon } from './dungeon';
@@ -251,8 +252,8 @@ export class Digger extends Dungeon {
       let x = cx + delta[0];
       let y = cy + delta[1];
       delete this._walls[x + "," + y];
-      let x = cx + 2 * delta[0];
-      let y = cy + 2 * delta[1];
+      x = cx + 2 * delta[0];
+      y = cy + 2 * delta[1];
       delete this._walls[x + "," + y];
     }
   }
